@@ -14,7 +14,8 @@ final class BezierDialogWindow: UIWindow {
     self.appKeyWindow = appKeyWindow
     super.init(windowScene: windowScene)
     
-    self.rootViewController = BezierDialogHostingController(rootView: BezierDialogView())
+    let rootViewController = BezierDialogHostingController(rootView: BezierDialogView())
+    self.rootViewController = rootViewController
   }
   
   required init?(coder: NSCoder) {
@@ -36,4 +37,10 @@ final class BezierDialogWindow: UIWindow {
 
 final class BezierDialogHostingController: UIHostingController<BezierDialogView> {
   override var prefersStatusBarHidden: Bool { true }
+
+  override func loadView() {
+    super.loadView()
+    
+    self.view.backgroundColor = .clear
+  }
 }

@@ -9,7 +9,8 @@ import SwiftUI
 
 extension View {
   public func initBezierDialog() -> some View {
-    BezierDialogSingleton.shared
-    return self
+    self.onAppear {
+      BezierDialogSingleton.shared.prepare()
+    }
   }
 }
