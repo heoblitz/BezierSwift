@@ -60,27 +60,31 @@ public struct BezierDialogView: View, Themeable {
       HStack(spacing: .zero) {
         HStack(spacing: .zero) {
           VStack(alignment: .center, spacing: Metric.belowStackTop) {
-            if !viewModel.title.isEmpty || !viewModel.description.isEmpty {
+            if !self.viewModel.title.isEmpty || !self.viewModel.description.isEmpty {
               VStack(alignment: .center, spacing: Metric.upperStackSpace) {
-                Text(viewModel.title)
-                  .applyBezierFontStyle(.bold16)
-                Text(viewModel.description)
-                  .applyBezierFontStyle(.normal14)
+                if !self.viewModel.title.isEmpty {
+                  Text(self.viewModel.title)
+                    .applyBezierFontStyle(.bold16)
+                }
+                if !self.viewModel.description.isEmpty {
+                  Text(self.viewModel.description)
+                    .applyBezierFontStyle(.normal14)
+                }
               }
               .padding(.top, Metric.upperStackContainerTop)
             }
             
-            if !viewModel.buttons.isEmpty {
-              if viewModel.isButtonStackVertical {
+            if !self.viewModel.buttons.isEmpty {
+              if self.viewModel.isButtonStackVertical {
                 VStack(spacing: Metric.belowStackSpace) {
                   ForEach(viewModel.buttons.prefix(4).indices, id: \.self) { idx in
-                    viewModel.buttons[idx]
+                    self.viewModel.buttons[idx]
                   }
                 }
               } else {
                 HStack(spacing: Metric.belowStackSpace) {
-                  ForEach(viewModel.buttons.prefix(2).indices, id: \.self) { idx in
-                    viewModel.buttons[idx]
+                  ForEach(self.viewModel.buttons.prefix(2).indices, id: \.self) { idx in
+                    self.viewModel.buttons[idx]
                   }
                 }
               }
