@@ -1,0 +1,93 @@
+//
+//  BezierDialogView.swift
+//  
+//
+//  Created by woody on 2023/03/13.
+//
+
+import SwiftUI
+
+private enum Metric {
+  static let dimSideMinPadding = CGFloat(40)
+
+  static let dialogMaxWidth = CGFloat(480)
+  static let dialogPadding = CGFloat(16)
+
+  static let upperStackContainerTop = CGFloat(4)
+  static let upperStackSpace = CGFloat(8)
+
+  static let middleStackTop = CGFloat(16)
+  static let middleStackSpace = CGFloat(12)
+
+  static let belowStackTop = CGFloat(20)
+  static let belowStackSpace = CGFloat(8)
+}
+
+public struct BezierDialogView: View, Themeable {
+  @StateObject private var viewModel: DialogViewModel = BezierDialogSingleton.shared.viewModel
+  @Environment(\.colorScheme) public var colorScheme
+  
+  public init() { }
+  
+  public var body: some View {
+    if self.viewModel.isPresented {
+      ZStack {
+        self.palette(.bgtxtAbsoluteBlackLighter)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
+          .allowsHitTesting(false)
+          .edgesIgnoringSafeArea(.all)
+          .zIndex(1)
+        
+        self.dialogContentView
+          .zIndex(2)
+      }
+    } else {
+      EmptyView()
+    }
+  }
+  
+  @ViewBuilder
+  private var dialogContentView: some View {
+    VStack(alignment: .center, spacing: .zero) {
+      HStack(spacing: .zero) {
+        HStack(spacing: .zero) {
+          VStack(alignment: .center, spacing: Metric.belowStackTop) {
+            if !viewModel.title.isEmpty || !viewModel.description.isEmpty {
+              VStack(alignment: .center, spacing: Metric.upperStackSpace) {
+                Text(viewModel.title)
+                  .applyBezierFontStyle(.bold16)
+                Text(viewModel.description)
+                  .applyBezierFontStyle(.normal14)
+              }
+              .padding(.top, Metric.upperStackContainerTop)
+            }
+            
+            if !viewModel.buttons.isEmpty {
+              if viewModel.isButtonStackVertical {
+                VStack(spacing: Metric.belowStackSpace) {
+                  ForEach(viewModel.buttons.prefix(4).indices, id: \.self) { idx in
+                    viewModel.buttons[idx]
+                  }
+                }
+              } else {
+                HStack(spacing: Metric.belowStackSpace) {
+                  ForEach(viewModel.buttons.prefix(2).indices, id: \.self) { idx in
+                    viewModel.buttons[idx]
+                  }
+                }
+              }
+            }
+          }
+          .padding(.all, Metric.dialogPadding)
+          .frame(maxWidth: .infinity)
+        }
+        .background(self.palette(.bgWhiteHigh))
+        .applyBezierCornerRadius(type: .round16)
+        .applyBezierElevation(self, type: .mEv3)
+        .frame(maxWidth: Metric.dialogMaxWidth)
+        .padding(.horizontal, Metric.dimSideMinPadding)
+      }
+    }
+  }
+}
+
