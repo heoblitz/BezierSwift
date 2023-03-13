@@ -14,6 +14,13 @@ final class BezierDialogWindow: UIWindow {
     self.appKeyWindow = appKeyWindow
     super.init(windowScene: windowScene)
     
+    let appKeyWindowFrame = appKeyWindow.frame
+    self.frame = CGRect(
+      x: appKeyWindowFrame.origin.x,
+      y: appKeyWindowFrame.origin.y,
+      width: appKeyWindowFrame.width,
+      height: appKeyWindowFrame.height + 0.1
+    )
     let rootViewController = BezierDialogHostingController(rootView: BezierDialogView())
     self.rootViewController = rootViewController
   }

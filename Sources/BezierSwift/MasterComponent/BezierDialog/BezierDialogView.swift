@@ -51,7 +51,6 @@ public struct BezierDialogView: View, Themeable {
   private var dimmedView: some View {
     self.palette(.bgtxtAbsoluteBlackLighter)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .allowsHitTesting(false)
       .edgesIgnoringSafeArea(.all)
   }
     
