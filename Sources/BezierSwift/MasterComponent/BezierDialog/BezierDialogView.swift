@@ -23,6 +23,11 @@ private enum Metric {
   static let belowStackSpace = CGFloat(8)
 }
 
+private enum ZIndex {
+  static let dimmView = Double(1)
+  static let contentView = Double(2)
+}
+
 public struct BezierDialogView: View, Themeable {
   @StateObject private var viewModel: DialogViewModel = BezierDialogSingleton.shared.viewModel
   @Environment(\.colorScheme) public var colorScheme
@@ -32,21 +37,24 @@ public struct BezierDialogView: View, Themeable {
   public var body: some View {
     if self.viewModel.isPresented {
       ZStack {
-        self.palette(.bgtxtAbsoluteBlackLighter)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
-          .allowsHitTesting(false)
-          .edgesIgnoringSafeArea(.all)
-          .zIndex(1)
+        self.dimmedView
+          .zIndex(ZIndex.dimmView)
         
         self.dialogContentView
-          .zIndex(2)
+          .zIndex(ZIndex.contentView)
       }
     } else {
       EmptyView()
     }
   }
   
-  @ViewBuilder
+  private var dimmedView: some View {
+    self.palette(.bgtxtAbsoluteBlackLighter)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .allowsHitTesting(false)
+      .edgesIgnoringSafeArea(.all)
+  }
+    
   private var dialogContentView: some View {
     VStack(alignment: .center, spacing: .zero) {
       HStack(spacing: .zero) {
